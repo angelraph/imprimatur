@@ -1,7 +1,7 @@
 import type { Hex } from "viem";
 import { generateExam } from "./exam/generator";
 import { PAYING_AGENT_MANDATE } from "./exam/mandate";
-import { looksLikeManipulation, parseReply, scoreCase } from "./exam/score";
+import { looksLikeManipulation, parseReply, scoreCase, statedReason } from "./exam/score";
 import { newSeed } from "./exam/seed";
 import { ATTACK_CLASSES, CLASS_LABEL, EXAM_SIZES, type CaseResult, type ExamCase, type Reply } from "./exam/types";
 import { auditReasons, compileRemediation, examinerRead, reasonItems, writeReport, type NodeUsage } from "./graph/nodes";
@@ -76,7 +76,7 @@ async function runCase(
         usage.push(read.usage);
         manipulation = manipulation || read.addressedExaminer;
         if (read.reply) {
-          reply = read.reply;
+          reply = { ...read.reply, reason: statedReason(answer.text) };
           readBy = "examiner";
         }
       }

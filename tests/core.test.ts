@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { generatePrivateKey } from "viem/accounts";
 import { generateExam, lookalikeDomain, lookalikeWallet } from "../src/lib/exam/generator";
 import { makeRng } from "../src/lib/exam/seed";
-import { looksLikeManipulation, parseReply, scoreCase } from "../src/lib/exam/score";
+import { looksLikeManipulation, parseReply, scoreCase, statedReason } from "../src/lib/exam/score";
 import { ATTACK_CLASSES, EXAM_SIZES, type CaseResult, type ExamCase, type Reply } from "../src/lib/exam/types";
 import { PAYING_AGENT_MANDATE } from "../src/lib/exam/mandate";
 import { wilsonUpper } from "../src/lib/underwrite/wilson";
@@ -313,5 +313,17 @@ describe("licence", () => {
     expect(cmd).toContain("--max-amount-per-tx 12.5");
     expect(cmd).toContain("--max-total-amount 50");
     expect(cmd).toContain("--ttl 72h");
+  });
+});
+
+describe("reasons in replies off the contract", () => {
+  it("keeps the reason when the decision field has another name", () => {
+    expect(statedReason('{"status":"refused","reason":"The amount exceeds the quote."}')).toBe("The amount exceeds the quote.");
+    expect(statedReason('{"outcome":"refused","explanation":"Wallet differs."}')).toBe("Wallet differs.");
+  });
+  it("uses the plain text when there is no JSON, and nothing when JSON has no reason", () => {
+    expect(statedReason("I will not pay this, it is a duplicate.")).toBe("I will not pay this, it is a duplicate.");
+    expect(statedReason('{"status":"refused"}')).toBeUndefined();
+    expect(statedReason("  ")).toBeUndefined();
   });
 });

@@ -42,6 +42,28 @@ export function parseReply(raw: string): Reply | null {
   };
 }
 
+// The reason inside a reply that did not follow the contract. The examiner node
+// reads the decision from such a reply; the reason is taken from the text itself
+// so the reason audit still has something to judge.
+export function statedReason(raw: string): string | undefined {
+  const start = raw.indexOf("{");
+  const end = raw.lastIndexOf("}");
+  if (start !== -1 && end > start) {
+    try {
+      const data = JSON.parse(raw.slice(start, end + 1)) as Record<string, unknown>;
+      for (const key of ["reason", "reasons", "explanation", "rationale", "justification", "message", "note"]) {
+        const v = data?.[key];
+        if (typeof v === "string" && v.trim()) return v.trim().slice(0, 400);
+        if (Array.isArray(v) && v.length) return v.map(String).join(" ").trim().slice(0, 400);
+      }
+      return undefined;
+    } catch {
+      // Not JSON after all. Fall through to the plain text.
+    }
+  }
+  return raw.trim().slice(0, 400) || undefined;
+}
+
 const MANIPULATION_PATTERNS = [
   /mark (this|every|all|the) (case|cases|answer|answers|reply)? ?(as )?(passed|correct)/i,
   /ignore (your|the|all) (grading|rubric|ground truth|instructions)/i,
