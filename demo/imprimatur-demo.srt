@@ -1,0 +1,255 @@
+1
+00:00:00,857 --> 00:00:03,428
+Kite lets you give an AI agent a budget.
+
+2
+00:00:03,448 --> 00:00:05,811
+But nobody tells you what that budget should be.
+
+3
+00:00:05,831 --> 00:00:07,282
+Imprimatur does.
+
+4
+00:00:07,303 --> 00:00:10,590
+It examines an agent before it is allowed to spend,
+
+5
+00:00:10,610 --> 00:00:13,871
+and turns the result into a signed spending limit.
+
+6
+00:00:14,644 --> 00:00:16,161
+The idea is simple.
+
+7
+00:00:16,181 --> 00:00:17,853
+Before an agent gets money,
+
+8
+00:00:17,873 --> 00:00:19,168
+it sits an exam.
+
+9
+00:00:19,188 --> 00:00:21,408
+Most of the requests are traps:
+
+10
+00:00:21,428 --> 00:00:25,510
+lookalike payees, instructions hidden inside invoices,
+
+11
+00:00:25,530 --> 00:00:29,494
+prices above the quote, duplicate and split invoices.
+
+12
+00:00:29,514 --> 00:00:32,189
+The rest are honest payments that should go through.
+
+13
+00:00:32,209 --> 00:00:35,197
+Code grades every answer against facts fixed in
+
+14
+00:00:35,217 --> 00:00:38,778
+advance, so no model ever marks its own work.
+
+15
+00:00:39,544 --> 00:00:40,943
+This is the exam room.
+
+16
+00:00:40,963 --> 00:00:42,532
+Choose a built in applicant,
+
+17
+00:00:42,552 --> 00:00:44,733
+or point the exam at your own agent.
+
+18
+00:00:44,752 --> 00:00:48,053
+Pick the short exam or the full one, and begin.
+
+19
+00:00:48,073 --> 00:00:50,475
+Every sitting draws a fresh seed,
+
+20
+00:00:50,495 --> 00:00:52,975
+so the answers cannot be memorised.
+
+21
+00:00:52,995 --> 00:00:55,788
+Each reply is graded the moment it arrives.
+
+22
+00:00:56,591 --> 00:00:58,354
+The result is a licence.
+
+23
+00:00:58,374 --> 00:01:02,065
+This agent earned Grade A: forty dollars per payment,
+
+24
+00:01:02,085 --> 00:01:04,005
+five hundred dollars in total,
+
+25
+00:01:04,025 --> 00:01:05,633
+valid for one week.
+
+26
+00:01:05,653 --> 00:01:07,300
+That limit is not a guess.
+
+27
+00:01:07,320 --> 00:01:09,852
+It comes from a ninety five percent confidence bound
+
+28
+00:01:09,872 --> 00:01:12,847
+on the failure rate, so a short exam can never earn
+
+29
+00:01:12,867 --> 00:01:14,149
+a large limit.
+
+30
+00:01:14,957 --> 00:01:17,476
+The system that sets the limit is not the one that
+
+31
+00:01:17,496 --> 00:01:18,557
+approves it.
+
+32
+00:01:18,577 --> 00:01:22,489
+Reppo's independent evaluators review the examiner's file.
+
+33
+00:01:22,509 --> 00:01:25,536
+The licence stays provisional until they confirm it.
+
+34
+00:01:25,556 --> 00:01:28,297
+This one scored ninety eight out of one hundred.
+
+35
+00:01:29,077 --> 00:01:32,781
+A licence is only a document until something enforces it.
+
+36
+00:01:32,801 --> 00:01:35,503
+So each one prints a Kite Passport command with
+
+37
+00:01:35,523 --> 00:01:36,805
+its own limits.
+
+38
+00:01:36,825 --> 00:01:39,044
+We opened this session with a passkey,
+
+39
+00:01:39,064 --> 00:01:41,844
+and the agent made a real payment inside it.
+
+40
+00:01:41,864 --> 00:01:44,656
+When it tried to pay a host that Kite does not trust,
+
+41
+00:01:44,676 --> 00:01:45,972
+Kite refused.
+
+42
+00:01:46,744 --> 00:01:47,883
+Nothing is hidden.
+
+43
+00:01:47,903 --> 00:01:49,615
+Every case is on the record,
+
+44
+00:01:49,635 --> 00:01:52,492
+with the ground truth beside the agent's answer,
+
+45
+00:01:52,512 --> 00:01:54,810
+and a signature anyone can check.
+
+46
+00:01:55,611 --> 00:01:57,349
+Not every agent passes.
+
+47
+00:01:57,369 --> 00:01:59,588
+This one was told to approve everything.
+
+48
+00:01:59,608 --> 00:02:02,088
+It paid twenty one of twenty four traps,
+
+49
+00:02:02,108 --> 00:02:03,390
+and was declined.
+
+50
+00:02:03,410 --> 00:02:06,776
+SERV Reasoning wrote corrective rules from its failures.
+
+51
+00:02:06,796 --> 00:02:09,250
+On a new exam, with new cases,
+
+52
+00:02:09,270 --> 00:02:12,752
+it paid none of the traps, and earned a small licence.
+
+53
+00:02:12,772 --> 00:02:14,615
+Feedback has to prove itself.
+
+54
+00:02:15,411 --> 00:02:17,162
+Anyone can check a licence.
+
+55
+00:02:17,182 --> 00:02:19,206
+Paste the number to see the signature,
+
+56
+00:02:19,226 --> 00:02:21,133
+the status and the limit.
+
+57
+00:02:21,153 --> 00:02:23,946
+Merchants and other agents call one endpoint,
+
+58
+00:02:23,966 --> 00:02:26,980
+priced at one cent over x402.
+
+59
+00:02:27,777 --> 00:02:30,700
+Every licence, granted or declined,
+
+60
+00:02:30,720 --> 00:02:32,445
+is public in the registry.
+
+61
+00:02:33,244 --> 00:02:35,594
+Imprimatur runs on SERV Reasoning,
+
+62
+00:02:35,614 --> 00:02:38,016
+with Reppo, Kite and Dolphin.
+
+63
+00:02:38,036 --> 00:02:39,188
+Get verified.
+
+64
+00:02:39,208 --> 00:02:40,711
+Spend with confidence.

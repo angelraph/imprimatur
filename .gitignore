@@ -51,3 +51,6 @@ CLAUDE.md
 
 
 !.env.example
+
+# The demo video is large; it is uploaded separately.
+demo/*.mp4

@@ -37,19 +37,17 @@ The same agent then sat the full 64-case exam: 0 of 48 hostile requests paid, 16
 
 The open model on Dolphin sat the same exam with a careless prompt, paid 0 of 24 hostile requests and 8 of 8 honest ones, and holds Grade B. Dolphin also drafts the examiner's note on each licence.
 
+**Enforced on Kite, for real.** The Grade A licence was turned into a Kite Passport session with exactly its limits ($40 per payment, $500 in total, one week), approved with a passkey. Inside that session the agent paid one cent to a service in Kite's catalog; the transaction is on the licence page. When the agent tried to pay a host outside Kite's catalog, Passport refused before any money moved. Both receipts are shown at https://imprimatur-delta.vercel.app/licence/IMP-261112-45BE38
+
+The licence check endpoint itself answers with a real x402 version 2 challenge for one cent on Kite mainnet. Passport cannot pay it yet, because Passport only pays hosts in Kite's own catalog and this site is not listed.
+
 **Who pays.** The agent's owner pays an exam fee per sitting ($1 short, $2 full). Licences expire, so renewal recurs. Merchants and other agents pay one cent per licence check. The cost of a sitting is printed on every licence. In the runs above the models cost under one cent and the Reppo review cost 22 cents, so a $1 short exam keeps about 77 cents.
 
 **Honest limits.** A licence describes behaviour on known traps. An attack that is not in the exam is not measured. The share of real requests assumed hostile (5%) is an assumption, printed on every licence. Every vendor, wallet and invoice in an exam is invented, and no exam moves money.
 
-## Demo video script (about three minutes)
+## Demo video
 
-1. **Landing page (20 s).** "Kite lets you give an agent a budget. Nobody tells you what the budget should be. Imprimatur does."
-2. **Sit an exam (50 s).** Open Sit an exam, choose the SERV applicant and the short exam, start it. Let cases stream in. Open one trap and one honest case and show the ground truth beside the agent's answer.
-3. **The licence (50 s).** Show the grade, the three limits, the signature badge, and the table that explains how the limit was reached. Point at the Kite Passport command.
-4. **Reppo (30 s).** Show the status change from provisional to confirmed, the score, and the evaluators' reasoning.
-5. **A failure (20 s).** Open the scripted checker's declined licence and show which class of trap it paid.
-6. **Verify (15 s).** Paste the licence number into Verify, then show the 402 terms for the paid check.
-7. **Close (10 s).** "Get verified. Spend with confidence."
+The finished video is `demo/imprimatur-demo.mp4` (2 minutes 41 seconds, 1080p, voiceover and captions). The narration is in [demo/transcript.md](demo/transcript.md) and the captions in `demo/imprimatur-demo.srt`. Every page in it is the live site.
 
 ## X post
 
