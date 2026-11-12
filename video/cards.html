@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; width: 100%; height: 100%; background: #08080b; overflow: hidden; }
+  body { font-family: Manrope, "Segoe UI", sans-serif; color: #f5f5f7; }
+  .stage { position: fixed; inset: 0; overflow: hidden; }
+  .glow { position: absolute; width: 1100px; height: 1100px; border-radius: 50%; filter: blur(120px); opacity: .0; }
+  .g1 { background: radial-gradient(circle, rgba(143,115,255,.55), rgba(143,115,255,0) 62%); left: -260px; top: -420px; }
+  .g2 { background: radial-gradient(circle, rgba(118,84,255,.38), rgba(118,84,255,0) 62%); right: -340px; bottom: -520px; }
+  .grid { position: absolute; inset: -80px; opacity: 0;
+    background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+    background-size: 72px 72px; mask-image: radial-gradient(ellipse at center, #000 20%, transparent 72%); -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 72%); }
+  .center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 120px; }
+  .line { position: absolute; left: 0; right: 0; top: 50%; text-align: center; font-weight: 600; letter-spacing: -0.02em; font-size: 62px; line-height: 1.15; padding: 0 140px; opacity: 0; }
+  .line em { font-style: normal; color: #8f73ff; }
+  .kicker { font-family: "IBM Plex Mono", monospace; font-size: 17px; letter-spacing: .32em; text-transform: uppercase; color: #8f73ff; opacity: 0; }
+  .brand { display: flex; align-items: center; gap: 26px; opacity: 0; }
+  .brand img { height: 112px; width: auto; }
+  .brand .name { font-size: 104px; font-weight: 700; letter-spacing: -0.035em; }
+  .tag { margin-top: 30px; font-size: 40px; font-weight: 500; letter-spacing: -0.015em; color: #f5f5f7; opacity: 0; }
+  .sub { margin-top: 22px; font-size: 25px; color: #9b9ba8; max-width: 980px; line-height: 1.45; opacity: 0; }
+  .rule { margin-top: 44px; height: 2px; width: 0; background: linear-gradient(90deg, transparent, #8f73ff, transparent); }
+  .chips { margin-top: 46px; display: flex; gap: 16px; justify-content: center; }
+  .chip { padding: 13px 26px; border-radius: 999px; border: 1px solid #2c2c38; background: #111116; font-size: 22px; font-weight: 600; opacity: 0; }
+  .chip span { color: #9b9ba8; font-weight: 500; margin-left: 10px; font-size: 18px; }
+  .url { margin-top: 44px; font-family: "IBM Plex Mono", monospace; font-size: 24px; color: #c9bcff; opacity: 0; }
+  .url small { display: block; margin-top: 10px; font-size: 18px; color: #9b9ba8; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="grid" id="grid"></div>
+  <div class="glow g1" id="g1"></div>
+  <div class="glow g2" id="g2"></div>
+
+  <div id="intro" style="display:none">
+    <div class="line" id="l1">Kite lets you give an AI agent <em>a budget</em>.</div>
+    <div class="line" id="l2">Nobody tells you what<br>that budget <em>should be</em>.</div>
+    <div class="center">
+      <div class="kicker" id="ik">A spending licence for AI agents</div>
+      <div class="brand" id="ib" style="margin-top:34px"><img src="mark.png" alt=""><div class="name">Imprimatur</div></div>
+      <div class="tag" id="it">Earn the limit before you spend.</div>
+      <div class="rule" id="ir"></div>
+      <div class="sub" id="is">It examines an agent before it is allowed to spend,<br>and turns the result into a signed spending limit.</div>
+    </div>
+  </div>
+
+  <div id="outro" style="display:none">
+    <div class="center">
+      <div class="brand" id="ob"><img src="mark.png" alt=""><div class="name">Imprimatur</div></div>
+      <div class="chips">
+        <div class="chip" id="c1">SERV Reasoning<span>judgement</span></div>
+        <div class="chip" id="c2">Reppo<span>outside examiner</span></div>
+        <div class="chip" id="c3">Kite<span>enforcement</span></div>
+        <div class="chip" id="c4">Dolphin<span>open model</span></div>
+      </div>
+      <div class="rule" id="or"></div>
+      <div class="tag" id="ot" style="font-size:54px;font-weight:700;letter-spacing:-0.025em">Get verified. Spend with confidence.</div>
+      <div class="url" id="ou">imprimatur-delta.vercel.app<small>github.com/angelraph/imprimatur · SERV Hackathon 02</small></div>
+    </div>
+  </div>
+</div>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const ease = (x) => { x = clamp(x); return 1 - Math.pow(1 - x, 3); };
+  const io = (x) => { x = clamp(x); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+  // p rises 0..1 over [a, a+d]
+  const up = (t, a, d = .7) => ease((t - a) / d);
+  // visible window: in at a, out at b
+  const win = (t, a, b, d = .55) => Math.min(up(t, a, d), 1 - io((t - b) / d));
+  function show(el, p, dy = 26, extra = "") {
+    el.style.opacity = clamp(p);
+    el.style.transform = `translateY(${(1 - clamp(p)) * dy}px) ${extra}`;
+  }
+  function bg(t, total) {
+    $("grid").style.opacity = .9 * up(t, 0, 1.2);
+    $("grid").style.transform = `translate(${-t * 5}px, ${-t * 3}px)`;
+    $("g1").style.opacity = .9 * up(t, 0, 1.4);
+    $("g2").style.opacity = .8 * up(t, .2, 1.6);
+    $("g1").style.transform = `translate(${Math.sin(t * .35) * 60}px, ${Math.cos(t * .3) * 40}px)`;
+    $("g2").style.transform = `translate(${Math.cos(t * .28) * 70}px, ${Math.sin(t * .33) * 50}px)`;
+  }
+  // k: {a, b, c, d} seconds: line 1 in, line 2 in, brand in, sub in
+  window.renderIntro = (t, k) => {
+    $("intro").style.display = "block";
+    bg(t);
+    const p1 = win(t, k.a, k.b - .25);
+    const p2 = win(t, k.b, k.c - .3);
+    $("l1").style.opacity = p1;
+    $("l1").style.transform = `translateY(calc(-50% + ${(1 - up(t, k.a)) * 34 - io((t - (k.b - .25)) / .55) * 34}px))`;
+    $("l2").style.opacity = p2;
+    $("l2").style.transform = `translateY(calc(-50% + ${(1 - up(t, k.b)) * 34 - io((t - (k.c - .3)) / .55) * 34}px))`;
+    show($("ik"), up(t, k.c + .05, .6), 14);
+    const pb = up(t, k.c + .15, .9);
+    $("ib").style.opacity = pb;
+    $("ib").style.transform = `scale(${.9 + .1 * pb}) translateY(${(1 - pb) * 18}px)`;
+    show($("it"), up(t, k.c + .75, .7), 20);
+    $("ir").style.width = 520 * up(t, k.d - .2, .9) + "px";
+    show($("is"), up(t, k.d, .8), 20);
+  };
+  // k: {a: chips start, b: tagline, c: url}
+  window.renderOutro = (t, k) => {
+    $("outro").style.display = "block";
+    bg(t + 20);
+    const pb = up(t, .25, .9);
+    $("ob").style.opacity = pb;
+    $("ob").style.transform = `scale(${.9 + .1 * pb})`;
+    ["c1", "c2", "c3", "c4"].forEach((id, i) => show($(id), up(t, k.a[i], .55), 22));
+    $("or").style.width = 620 * up(t, k.b - .35, .9) + "px";
+    show($("ot"), up(t, k.b, .8), 24);
+    show($("ou"), up(t, k.c, .8), 16);
+  };
+</script>
+</body>
+</html>

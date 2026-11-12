@@ -54,3 +54,14 @@ CLAUDE.md
 
 # The demo video is large; it is uploaded separately.
 demo/*.mp4
+
+# Demo video working files
+video/node_modules/
+video/frames/
+video/audio/
+video/sheets/
+video/mark.png
+video/*.json
+!video/scenes.json
+!video/package.json
+video/captions.ass

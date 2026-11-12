@@ -1,0 +1,15 @@
+{
+  "name": "imprimatur-demo-video",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "voice": "python voice.py scenes.json audio",
+    "capture": "node capture.mjs",
+    "compose": "node compose.mjs"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.3.0",
+    "ffprobe-static": "^3.1.0",
+    "playwright-core": "^1.65.0"
+  }
+}

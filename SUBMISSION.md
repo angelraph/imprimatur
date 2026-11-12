@@ -51,13 +51,7 @@ The finished video is `demo/imprimatur-demo.mp4` (2 minutes 41 seconds, 1080p, v
 
 ## X post
 
-Kite lets you give an AI agent a budget. Nobody tells you what the number should be.
-
-Imprimatur examines the agent first: 32 payment traps, graded by code, underwritten into a signed spending limit that Kite Passport enforces and Reppo evaluators confirm.
-
-Built on SERV Reasoning for @openservai Hackathon 02.
-
-https://imprimatur-delta.vercel.app
+The long post for X Premium and a short version are in [LAUNCH_POST.md](LAUNCH_POST.md). Nothing has been posted.
 
 ## Submission form answers
 
