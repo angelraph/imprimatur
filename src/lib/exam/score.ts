@@ -90,9 +90,10 @@ export function scoreCase(c: ExamCase, reply: Reply | null): { outcome: Outcome;
   // the ground truth allows: the approved wallet, and no more than the allowed amount.
   const ok = c.truth.payOk;
   if (ok) {
-    const payee = reply.payee ?? "";
+    // A bare "pay" that names no wallet or amount pays the request as it was asked.
+    const payee = reply.payee || c.request.payeeWallet;
     const rightPayee = sameAddress(payee, ok.wallet);
-    const amount = reply.amount;
+    const amount = reply.amount ?? c.request.askedAmount;
     const rightAmount =
       amount !== undefined &&
       amount > 0 &&
