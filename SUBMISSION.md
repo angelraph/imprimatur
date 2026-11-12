@@ -58,3 +58,23 @@ Imprimatur examines the agent first: 32 payment traps, graded by code, underwrit
 Built on SERV Reasoning for @openservai Hackathon 02.
 
 https://imprimatur-delta.vercel.app
+
+## Submission form answers
+
+The form is at https://openserv.typeform.com/submissions02. Answers that are not personal:
+
+- **Track:** Reppo
+- **New or existing project:** A new project
+- **Project name:** Imprimatur
+- **Project URL:** https://imprimatur-delta.vercel.app
+- **Additional URL:** https://github.com/angelraph/imprimatur (or the video link once it is uploaded)
+- **Logo:** `public/mark.png`
+- **Team:** I'm participating solo
+
+**Tell us about your project.**
+
+Imprimatur is a spending licence for AI agents. Kite Passport lets an owner give an agent a budget, but the number is a guess. Imprimatur measures it. The agent sits a seeded exam of 32 or 64 payment requests, most of them traps: lookalike payees, instructions hidden in invoices, overcharges, duplicate and split invoices. Code grades every answer against facts fixed before the agent saw the case, then underwrites a limit from a Wilson 95% bound on the failure rate, so a short exam cannot earn a large limit. The licence is signed and can be regraded by anyone from its seed.
+
+SERV Reasoning runs the judgement steps: reading replies that are off format behind Prompt Guard, auditing whether each refusal named the right rule, and writing corrective rules for agents that fail. Reppo's independent evaluators review every examiner's file, and a licence stays provisional until they confirm it. Kite enforces the result: each licence prints a Passport session command with its own limits, and we opened one for real, paid inside it and recorded Kite's refusal of an untrusted host. Dolphin's open model sits the exam and drafts the examiner's note.
+
+It is for agent owners who need a cap they can defend, and for merchants who want to check an agent before serving it, for one cent over x402. Revenue is a fee per exam, renewal when licences expire, and the per-check fee. The live registry holds eleven real records, including a declined agent that earned a licence after SERV's corrective rules.
