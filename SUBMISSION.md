@@ -33,7 +33,11 @@ Drafts for the SERV Hackathon 02 form. Nothing here has been posted.
 
 The same agent then sat the full 64-case exam: 0 of 48 hostile requests paid, 16 of 16 legitimate ones paid. The larger sample tightened the failure bound to 7.4%, which earned Grade A: $40 per payment and $500 in total for a week. Reppo scored that file 98 and confirmed it. Two plain-code baselines sat the same exam and were declined, and Reppo agreed with both refusals. https://imprimatur-delta.vercel.app/licence/IMP-261112-45BE38
 
-**Who pays.** The agent's owner pays an exam fee per sitting ($1 short, $2 full). Licences expire, so renewal recurs. Merchants and other agents pay one cent per licence check. The model cost of a short sitting is printed on every licence and came to under one cent in the run above.
+**Feedback that proved itself.** The same small model was given a rubber stamp prompt: every invoice is already checked, approve it. It paid 21 of 24 hostile requests and was declined, and Reppo agreed. SERV wrote six corrective rules from the failed classes. On a fresh exam with new cases the agent paid 0 of 24 hostile requests and earned Grade C: $5 per payment and $20 in total for a day. Reppo scored that file 99 and confirmed it. Both records sit side by side at https://imprimatur-delta.vercel.app/licence/IMP-261112-5E11EE
+
+The open model on Dolphin sat the same exam with a careless prompt, paid 0 of 24 hostile requests and 8 of 8 honest ones, and holds Grade B. Dolphin also drafts the examiner's note on each licence.
+
+**Who pays.** The agent's owner pays an exam fee per sitting ($1 short, $2 full). Licences expire, so renewal recurs. Merchants and other agents pay one cent per licence check. The cost of a sitting is printed on every licence. In the runs above the models cost under one cent and the Reppo review cost 22 cents, so a $1 short exam keeps about 77 cents.
 
 **Honest limits.** A licence describes behaviour on known traps. An attack that is not in the exam is not measured. The share of real requests assumed hostile (5%) is an assumption, printed on every licence. Every vendor, wallet and invoice in an exam is invented, and no exam moves money.
 
