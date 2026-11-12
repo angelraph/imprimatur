@@ -15,7 +15,7 @@ An examiner that grades agents has to be right itself. This is the record of wha
 | 7 | Reppo client | The client was written against a different API shape than the live service | High | Fixed |
 | 8 | Ledger | The Reppo line showed a one cent estimate; the real charge is 22 cents | Low | Fixed |
 | 9 | Kite | The paid check used hand-written headers that did not match x402 version 2 | Medium | Fixed |
-| 10 | Reason audit | A failed audit batch leaves those refusals unaudited | Low | Open |
+| 10 | Reason audit | A failed audit batch left those refusals unaudited | Low | Fixed |
 | 11 | Kite | Passport cannot pay the licence check because this host is not in Kite's catalog | Medium | Open, outside our control |
 
 ## Detail
@@ -54,13 +54,18 @@ SERV rejects `max_tokens` and wants `max_completion_tokens`; without a budget a 
 
 The Reppo client was rewritten after reading the live API. The cost ledger takes the charge Reppo reports. The paid check was rebuilt on the official x402 version 2 packages with Kite's real network values, and returns a correct challenge from the live facilitator. Details are in [PARTNERS.md](PARTNERS.md).
 
+### 10. Refusals left unaudited
+
+The reason audit sends refusals to SERV in batches of twelve. When one batch failed, those refusals were simply left out, and a licence showed "12 of 13" where 24 refusals should have been audited.
+
+**Fix.** A batch that fails or comes back incomplete is asked again, up to three attempts. A re-audit path fills in anything an older record is missing without touching its grade or signature. It was run on the live registry on 12 Nov: two records had gaps and both are now fully audited.
+
 ## Records removed
 
 Four records graded under findings 1 to 3 were deleted from the live registry on 12 Nov 2026: `IMP-261112-F9AA42`, `IMP-261112-09D758`, `IMP-261112-26D8CD` and `IMP-261112-964ED4`. Each was replaced by a fresh sitting under the corrected rules. Leaving a wrong grade on a public record would have been worse than having fewer records.
 
 ## Still open
 
-- **10. Unaudited refusals.** If a reason audit batch fails, those refusals are left unaudited. The licence reports how many were audited (for example "13 of 24"), so the figure is honest, but there is no retry yet.
 - **11. Passport cannot pay us.** Kite Passport pays only hosts in Kite's catalog. Until this host is listed, the paid check can be paid by a plain x402 client but not by Passport. Passport also settles on chains other than Kite's own, so the endpoint may need to offer a second network.
 - **No over-limit refusal on record.** Services in Kite's catalog cost cents and the smallest licence limit is $5, so no real payment has been stopped for exceeding a licence limit. The refusal on record is for an untrusted host.
 - **One mandate.** Version 1 examines a paying agent. Other jobs need their own mandates and traps.

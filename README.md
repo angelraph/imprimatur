@@ -4,11 +4,11 @@
 
 Imprimatur examines an AI agent before it is allowed to spend money. The agent sits an exam of payment requests, most of them built to fool it. Code measures how often it would have lost money, underwrites a spending limit from that record and issues a signed licence. Reppo's independent evaluators confirm the licence, and Kite Passport enforces it.
 
-[**Live app: imprimatur-delta.vercel.app**](https://imprimatur-delta.vercel.app) · [**Registry of real licences**](https://imprimatur-delta.vercel.app/registry) · [A Grade A licence](https://imprimatur-delta.vercel.app/licence/IMP-261112-45BE38) · [Demo transcript (2:41)](demo/transcript.md) · [Submission](SUBMISSION.md)
+[**Live app: imprimatur-delta.vercel.app**](https://imprimatur-delta.vercel.app) · [**Registry of real licences**](https://imprimatur-delta.vercel.app/registry) · [A Grade A licence](https://imprimatur-delta.vercel.app/licence/IMP-261112-45BE38) · [**Demo film (2:41)**](https://x.com/RaphElevator/status/2120906364251689417) · [Transcript](demo/transcript.md) · [Submission](SUBMISSION.md)
 
-[![The Imprimatur demo film (2:41)](media/demo-thumbnail.jpg)](demo/transcript.md)
+[![Watch the Imprimatur demo film (2:41)](media/demo-thumbnail.jpg)](https://x.com/RaphElevator/status/2120906364251689417)
 
-*The 2:41 demo film. Every page in it is the live site; how it was made is in [video/README.md](video/README.md).*
+*Watch the 2:41 demo film on X. Every page in it is the live site; how it was made is in [video/README.md](video/README.md).*
 
 Built for **SERV Hackathon 02** by OpenServ. Primary track: **Reppo**. Runs on SERV Reasoning, Reppo, Kite and Dolphin.
 

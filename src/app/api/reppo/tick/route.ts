@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { priceReppo, tickReppo } from "@/lib/engine";
+import { priceReppo, reauditReasons, tickReppo } from "@/lib/engine";
 import { getLicence, queueReppo, saveLicence } from "@/lib/store";
 
 export const maxDuration = 60;
@@ -8,6 +8,7 @@ export const maxDuration = 60;
 // they wait, and a scheduled job can call it too.
 // With ?retry=<licence id>, a file Reppo could not take is put back in line first.
 // With ?reprice=<licence id>, the ledger is corrected to what Reppo charged.
+// With ?reaudit=<licence id>, refusals a failed audit batch left out are audited.
 async function tick(req: Request) {
   try {
     const retry = new URL(req.url).searchParams.get("retry");
@@ -23,6 +24,11 @@ async function tick(req: Request) {
     if (reprice) {
       const record = await getLicence(reprice);
       if (record && !record.recorded && priceReppo(record)) await saveLicence(record);
+    }
+    const reaudit = new URL(req.url).searchParams.get("reaudit");
+    if (reaudit) {
+      const record = await getLicence(reaudit);
+      if (record && !record.recorded) return NextResponse.json({ did: "reaudit", added: await reauditReasons(record) });
     }
     return NextResponse.json(await tickReppo());
   } catch (err) {

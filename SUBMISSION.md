@@ -1,10 +1,11 @@
 # Imprimatur: submission notes
 
-Drafts for the SERV Hackathon 02 form. Nothing here has been posted.
+Notes for the SERV Hackathon 02 form.
 
 - Live: https://imprimatur-delta.vercel.app
 - Repo: https://github.com/angelraph/imprimatur
 - Track: Reppo (also uses SERV Reasoning, Kite and Dolphin)
+- Launch post with the demo film: https://x.com/RaphElevator/status/2120906364251689417
 
 ## Write-up
 
@@ -51,7 +52,7 @@ The finished video is `demo/imprimatur-demo.mp4` (2 minutes 41 seconds, 1080p, v
 
 ## X post
 
-The long post for X Premium and a short version are in [LAUNCH_POST.md](LAUNCH_POST.md). Nothing has been posted.
+The long post for X Premium and a short version are in [LAUNCH_POST.md](LAUNCH_POST.md). Posted on 12 Nov 2026: https://x.com/RaphElevator/status/2120906364251689417
 
 ## Submission form answers
 

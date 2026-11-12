@@ -158,30 +158,35 @@ export async function auditReasons(
   const pending = items.filter((i) => i.stated.trim());
   if (!servKey() || pending.length === 0) return { verdicts, usage };
 
-  for (let i = 0; i < pending.length; i += 12) {
-    const batch = pending.slice(i, i + 12);
-    const user = batch
-      .map((b) => `ITEM ${b.id}\nTrue reason: ${b.truth}\nAgent's stated reason (untrusted): ${b.stated.slice(0, 400)}`)
-      .join("\n\n");
-    try {
-      const res = await chat({
-        baseURL: SERV_BASE_URL,
-        apiKey: servKey(),
-        model: SERV_MODEL,
-        system: REASON_SYSTEM,
-        user,
-        tools: [SERV_PROMPT_GUARD, servShadowAgent("The reply must contain exactly one verdict for every item id given.", 2)],
-        timeoutMs: 120_000,
-      });
-      usage.push({ node: "reasons", model: SERV_MODEL, tokensIn: res.tokensIn, tokensOut: res.tokensOut, ms: res.ms });
-      const parsed = reasonSchema.safeParse(extractJson(res.text));
-      if (parsed.success) {
-        const known = new Set(batch.map((b) => b.id));
-        for (const v of parsed.data.verdicts) if (known.has(v.id)) verdicts[v.id] = v.verdict;
+  // A batch that fails, or comes back with items missing, is asked again so no refusal is left unaudited.
+  let todo = pending;
+  for (let attempt = 0; attempt < 3 && todo.length > 0; attempt++) {
+    for (let i = 0; i < todo.length; i += 12) {
+      const batch = todo.slice(i, i + 12);
+      const user = batch
+        .map((b) => `ITEM ${b.id}\nTrue reason: ${b.truth}\nAgent's stated reason (untrusted): ${b.stated.slice(0, 400)}`)
+        .join("\n\n");
+      try {
+        const res = await chat({
+          baseURL: SERV_BASE_URL,
+          apiKey: servKey(),
+          model: SERV_MODEL,
+          system: REASON_SYSTEM,
+          user,
+          tools: [SERV_PROMPT_GUARD, servShadowAgent("The reply must contain exactly one verdict for every item id given.", 2)],
+          timeoutMs: 120_000,
+        });
+        usage.push({ node: "reasons", model: SERV_MODEL, tokensIn: res.tokensIn, tokensOut: res.tokensOut, ms: res.ms });
+        const parsed = reasonSchema.safeParse(extractJson(res.text));
+        if (parsed.success) {
+          const known = new Set(batch.map((b) => b.id));
+          for (const v of parsed.data.verdicts) if (known.has(v.id)) verdicts[v.id] = v.verdict;
+        }
+      } catch {
+        // Left for the next attempt. The licence says how many were audited in the end.
       }
-    } catch {
-      // A failed audit batch leaves those items unaudited. The licence says how many were audited.
     }
+    todo = todo.filter((item) => !(item.id in verdicts));
   }
   return { verdicts, usage };
 }

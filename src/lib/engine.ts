@@ -409,6 +409,30 @@ export async function tickReppo(): Promise<{ did: string }> {
   }
 }
 
+// Audits any correct refusal a sitting left unaudited, for example after a failed batch.
+// Only the reason counts change. The grade and the signed licence are left as issued.
+export async function reauditReasons(record: LicenceRecord): Promise<number> {
+  const sitting = await getSitting(record.sittingId);
+  if (!sitting) return 0;
+  const cases = generateExam(sitting.seed, EXAM_SIZES[sitting.size]);
+  const replies = Object.fromEntries(sitting.results.map((r) => [r.caseId, r.reply]));
+  const correct = new Set(sitting.results.filter((r) => r.outcome === "correct").map((r) => r.caseId));
+  const missing = reasonItems(cases, replies, correct).filter((item) => !(item.id in record.reasons.verdicts));
+  if (missing.length === 0) return 0;
+  const audit = await auditReasons(missing);
+  const verdicts = { ...record.reasons.verdicts, ...audit.verdicts };
+  const list = Object.values(verdicts);
+  record.reasons = {
+    audited: list.length,
+    grounded: list.filter((v) => v === "grounded").length,
+    otherReason: list.filter((v) => v === "other_reason").length,
+    noReason: list.filter((v) => v === "no_reason").length,
+    verdicts,
+  };
+  await saveLicence(record);
+  return Object.keys(audit.verdicts).length;
+}
+
 // Builds the rules for a re-sit from what went wrong and what Reppo said.
 export async function remediate(record: LicenceRecord, sitting: Sitting) {
   const cases = generateExam(sitting.seed, EXAM_SIZES[sitting.size]);

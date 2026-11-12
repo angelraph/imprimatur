@@ -1,6 +1,6 @@
 # Launch post
 
-The long post for X Premium, to go out with `demo/imprimatur-demo.mp4`. Nothing has been posted.
+The long post for X Premium, published with the demo film on 12 Nov 2026: https://x.com/RaphElevator/status/2120906364251689417
 
 ## Long version
 
@@ -68,9 +68,3 @@ Built on SERV Reasoning for @openservai Hackathon 02.
 
 https://imprimatur-delta.vercel.app
 ```
-
-## Before posting
-
-- Check the handles. @openservai is confirmed. @GoKiteAI, @dphnAI and @reppo come from OpenServ's and Kite's own posts about the hackathon and are worth one look before tagging.
-- A standard X account takes video up to 2 minutes 20 seconds. The film is 2:41, so it needs X Premium or a link to the film hosted elsewhere.
-- The submission form asks for the URL of this post.
