@@ -137,27 +137,32 @@ const ok = await verifyMessage({
               <section>
                 <H2 id="x402">The paid check</H2>
                 <p className="mt-4 text-muted">
-                  Software checks a licence with one call. When the deployment has a Kite receiving wallet, the endpoint is paid over x402: a call without payment gets the price, and a Kite Passport agent pays it inside its spending
-                  session.
+                  Software checks a licence with one call. When the deployment has a Kite receiving wallet, the endpoint is paid over x402: a call without payment gets the price, one cent of USDC on Kite, and a Kite Passport agent pays it inside its spending
+                  session. The payment settles only after the answer is ready.
                 </p>
                 <Code>{`GET /api/verify/IMP-261111-A1B2C3
 
 402 Payment Required
+PAYMENT-REQUIRED: <base64 of the terms below>
+
 {
-  "x402Version": 1,
+  "x402Version": 2,
   "accepts": [{
-    "scheme": "gokite-aa",
-    "maxAmountRequired": "10000",
+    "scheme": "exact",
+    "network": "eip155:2366",
+    "amount": "10000",
+    "asset": "0x7aB6...149e",
     "payTo": "0x...",
-    "merchantName": "Imprimatur",
-    ...
+    "extra": { "name": "Bridged USDC (Kite AI)", "version": "2" }
   }]
 }
 
 GET /api/verify/IMP-261111-A1B2C3
-X-PAYMENT: <base64 payment authorisation>
+PAYMENT-SIGNATURE: <base64 signed payment>
 
 200 OK
+PAYMENT-RESPONSE: <base64 settlement receipt>
+
 { "id": "...", "inForce": true, "status": "confirmed", "grade": "B",
   "limits": { ... }, "signatureValid": true, "licence": { ... } }`}</Code>
                 <p className="mt-4 text-muted">

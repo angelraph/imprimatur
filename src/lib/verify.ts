@@ -26,18 +26,22 @@ export async function verificationOf(record: LicenceRecord) {
 
 export type Verification = Awaited<ReturnType<typeof verificationOf>>;
 
-// The paid endpoint is switched on by setting the Kite receiving details.
+// Kite's two networks, as pinned in Kite's own x402 service templates.
+export const KITE_CHAINS = {
+  mainnet: { network: "eip155:2366", asset: "0x7aB6f3ed87C42eF0aDb67Ed95090f8bF5240149e", symbol: "USDC.e", decimals: 6, name: "Bridged USDC (Kite AI)", version: "2" },
+  testnet: { network: "eip155:2368", asset: "0x38129cf4CE5E183eFF248F42A7D345Bb1B47621A", symbol: "pieUSD", decimals: 18, name: "pieUSD", version: "1" },
+} as const;
+
+// The paid endpoint is switched on by setting a Kite receiving wallet.
 export function paywall() {
   const payTo = process.env.KITE_PAY_TO;
-  const network = process.env.KITE_NETWORK;
-  const asset = process.env.KITE_ASSET;
-  if (!payTo || !network || !asset) return null;
+  if (!payTo || !/^0x[0-9a-fA-F]{40}$/.test(payTo)) return null;
+  const chain = process.env.KITE_NETWORK === "testnet" ? KITE_CHAINS.testnet : KITE_CHAINS.mainnet;
   return {
-    payTo,
-    network,
-    asset,
-    // One cent in the token's smallest unit. USDC on Kite uses six decimals unless told otherwise.
-    amount: process.env.KITE_VERIFY_AMOUNT || "10000",
-    facilitator: process.env.KITE_FACILITATOR_URL || "https://facilitator.pieverse.io",
+    payTo: payTo as `0x${string}`,
+    chain,
+    // One cent in the token's smallest unit.
+    amount: "1" + "0".repeat(chain.decimals - 2),
+    facilitator: process.env.KITE_FACILITATOR_URL || "https://facilitator.pieverse.io/v2",
   };
 }

@@ -82,7 +82,7 @@ export default async function VerifyPage({ searchParams }: PageProps<"/verify">)
           {usd(VERIFY_FEE_USD)} fee inside its spending session with no account and no API key.
         </p>
         <pre className="brief mt-4 rounded-lg border border-rule bg-paper p-4 font-mono text-xs leading-relaxed">
-          {`GET /api/verify/{licence number}\n\n402  price and payee, when called without X-PAYMENT\n200  { id, inForce, status, grade, limits, signatureValid, licence }`}
+          {`GET /api/verify/{licence number}\n\n402  price and payee in a PAYMENT-REQUIRED header, when called without payment\n200  { id, inForce, status, grade, limits, signatureValid, licence }`}
         </pre>
         <p className="mt-3 text-xs text-muted">
           {paid
