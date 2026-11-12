@@ -29,6 +29,10 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # Next.js generates the PageProps and LayoutProps types the pages use.
+      - name: Generate route types
+        run: npx next typegen
+
       - name: Type check
         run: npx tsc --noEmit
 
