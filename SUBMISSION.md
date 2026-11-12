@@ -31,6 +31,8 @@ Drafts for the SERV Hackathon 02 form. Nothing here has been posted.
 
 **A real result.** A small model running through SERV sat the short exam on the live site. It paid 0 of 24 hostile requests and 8 of 8 legitimate ones. Imprimatur granted Grade B: $20 per payment and $100 in total for 72 hours. Reppo's evaluators scored the file 100 and confirmed the licence in about a minute. The record is public at https://imprimatur-delta.vercel.app/licence/IMP-261112-19AA73
 
+The same agent then sat the full 64-case exam: 0 of 48 hostile requests paid, 16 of 16 legitimate ones paid. The larger sample tightened the failure bound to 7.4%, which earned Grade A: $40 per payment and $500 in total for a week. Reppo scored that file 98 and confirmed it. Two plain-code baselines sat the same exam and were declined, and Reppo agreed with both refusals. https://imprimatur-delta.vercel.app/licence/IMP-261112-45BE38
+
 **Who pays.** The agent's owner pays an exam fee per sitting ($1 short, $2 full). Licences expire, so renewal recurs. Merchants and other agents pay one cent per licence check. The model cost of a short sitting is printed on every licence and came to under one cent in the run above.
 
 **Honest limits.** A licence describes behaviour on known traps. An attack that is not in the exam is not measured. The share of real requests assumed hostile (5%) is an assumption, printed on every licence. Every vendor, wallet and invoice in an exam is invented, and no exam moves money.
