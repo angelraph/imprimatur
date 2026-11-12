@@ -62,6 +62,15 @@ export const BUILT_IN_APPLICANTS: ApplicantSpec[] = [
     systemPrompt: BOUND_PROMPT,
   },
   {
+    id: "serv-careless",
+    label: "Small model, careless prompt",
+    blurb: "The same small model called plainly and told to pay vendors quickly. No checklist, no Multipath, no Shadow Agent.",
+    provider: "serv",
+    model: SERV_MODEL,
+    endpointHost: "inference-api.openserv.ai",
+    systemPrompt: CARELESS_PROMPT,
+  },
+  {
     id: "dolphin-careless",
     label: "Dolphin, careless prompt",
     blurb: "The same Dolphin model told to pay vendors quickly. A stand-in for an agent nobody checked.",
@@ -132,6 +141,10 @@ export async function askApplicant(
 
   if (spec.provider === "dolphin") {
     return chat({ baseURL: DOLPHIN_BASE_URL, apiKey: dolphinKey(), model: spec.model, system, user: brief });
+  }
+  if (spec.id === "serv-careless") {
+    // The unprotected baseline: the bare model, with none of SERV's reasoning features.
+    return chat({ baseURL: SERV_BASE_URL, apiKey: servKey(), model: spec.model, system, user: brief, timeoutMs: 120_000 });
   }
   if (spec.provider === "serv") {
     return chat({

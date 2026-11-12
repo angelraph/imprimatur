@@ -167,7 +167,7 @@ function costLines(sitting: Sitting, extra: NodeUsage[], reppoUsd: number): { li
     lines.push({ label: labels[node], model: rows[0].model, calls: rows.length, tokensIn, tokensOut, usd: costUsd(rows[0].model, tokensIn, tokensOut) });
   }
   if (reppoUsd > 0) {
-    lines.push({ label: "Outside examiner (Reppo)", model: "evaluation network", calls: 1, tokensIn: 0, tokensOut: 0, usd: reppoUsd });
+    lines.push({ label: REPPO_LINE, model: "evaluation network", calls: 1, tokensIn: 0, tokensOut: 0, usd: reppoUsd });
   }
   return { lines, totalUsd: lines.reduce((s, l) => s + l.usd, 0) };
 }
@@ -261,7 +261,7 @@ export async function finishSitting(id: string): Promise<LicenceRecord> {
     sittingId: sitting.id,
     parentLicenceId: sitting.parentLicenceId,
     constraints: sitting.constraints,
-    costs: { ...costLines(sitting, extraUsage, reppoOn ? 0.01 : 0), examFeeUsd: EXAM_FEE_USD[sitting.size] },
+    costs: { ...costLines(sitting, extraUsage, reppoOn ? REPPO_EVAL_USD : 0), examFeeUsd: EXAM_FEE_USD[sitting.size] },
     reppo: { state: reppoOn ? "queued" : "off" },
     kite: [],
     recorded: false,
@@ -346,6 +346,21 @@ export function buildDossier(record: LicenceRecord, sitting: Sitting): Dossier {
   };
 }
 
+// Reppo bills in credits. Once a verdict reports what it charged, the ledger shows that figure.
+const REPPO_EVAL_USD = 0.22;
+const REPPO_CREDITS_PER_USD = 2000;
+const REPPO_LINE = "Outside examiner (Reppo)";
+
+export function priceReppo(record: LicenceRecord): boolean {
+  const line = record.costs.lines.find((l) => l.label === REPPO_LINE);
+  if (!line) return false;
+  const usd = record.reppo.credits ? record.reppo.credits / REPPO_CREDITS_PER_USD : REPPO_EVAL_USD;
+  if (line.usd === usd) return false;
+  line.usd = usd;
+  record.costs.totalUsd = record.costs.lines.reduce((s, l) => s + l.usd, 0);
+  return true;
+}
+
 // Moves the Reppo queue forward by one step. Safe to call often.
 export async function tickReppo(): Promise<{ did: string }> {
   if (!reppoKey()) return { did: "off" };
@@ -357,6 +372,7 @@ export async function tickReppo(): Promise<{ did: string }> {
     if (reading.state === "pending") return { did: "waiting" };
     if (record) {
       record.reppo = { ...record.reppo, ...reading };
+      priceReppo(record);
       if (reading.state === "settled" && record.status === "provisional") {
         record.status = reading.decision === "accept" ? "confirmed" : reading.decision === "revise" ? "held" : "refused";
       }
