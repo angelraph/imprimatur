@@ -60,6 +60,8 @@ export async function chat(call: ChatCall): Promise<ChatResult> {
           { role: "system", content: call.system },
           { role: "user", content: call.user },
         ],
+        // SERV sizes its own budget when none is given and can overshoot the model's ceiling.
+        ...(call.baseURL === SERV_BASE_URL ? { max_completion_tokens: 6000 } : {}),
         ...(call.tools ? { tools: call.tools } : {}),
         ...(call.jsonSchema
           ? {
@@ -79,7 +81,8 @@ export async function chat(call: ChatCall): Promise<ChatResult> {
     } catch (err) {
       lastError = err;
       const status = err instanceof OpenAI.APIError ? err.status : undefined;
-      const retryable = status === undefined || status === 429 || (status >= 500 && status < 600);
+      const overshoot = status === 400 && err instanceof Error && /max_tokens is too large/.test(err.message);
+      const retryable = overshoot || status === undefined || status === 429 || (status >= 500 && status < 600);
       if (!retryable || attempt === 2) break;
       await sleep(800 * (attempt + 1));
     }
