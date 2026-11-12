@@ -419,6 +419,6 @@ export async function remediate(record: LicenceRecord, sitting: Sitting) {
   }).filter((f) => f.failures > 0);
   const weak = (record.reppo.verdicts ?? []).filter((v) => v.score < 80).map((v) => `Reppo scored ${v.criterion.toLowerCase()} at ${v.score} of 100.`);
   const critiques = record.reppo.decision && record.reppo.decision !== "accept" && record.reppo.reason ? [...weak, record.reppo.reason] : weak;
-  const legitMissed = record.underwriting.falseRefusals + record.underwriting.friction;
-  return compileRemediation({ failedClasses, falseRefusals: legitMissed, critiques });
+  const u = record.underwriting;
+  return compileRemediation({ failedClasses, falseRefusals: u.legitTrials - u.legitPaid, unreadable: u.invalid, critiques });
 }

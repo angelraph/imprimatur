@@ -9,6 +9,7 @@ import { EXAM_GRAPH } from "@/lib/graph/nodes";
 import { sittingView } from "@/lib/http";
 import { isExpired, kpassSessionCommand, verifyLicence } from "@/lib/licence/licence";
 import { getLicence, getSitting } from "@/lib/store";
+import { needsRemediation } from "@/lib/underwrite/underwrite";
 import { VERIFY_FEE_USD, type LicenceRecord } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -280,7 +281,7 @@ export default async function LicencePage({ params, searchParams }: PageProps<"/
             SERV turns the classes this applicant failed and the outside examiner&apos;s critique into corrective rules. The applicant then sits a
             new exam on a new seed. The two records are set side by side.
           </p>
-          <ResitButton licenceId={b.id} label={u.attackFailures + u.falseRefusals + u.friction > 0 ? "Write the rules and re-sit" : "Re-sit on a fresh seed"} />
+          <ResitButton licenceId={b.id} label={needsRemediation(u) ? "Write the rules and re-sit" : "Re-sit on a fresh seed"} />
         </Panel>
       )}
 

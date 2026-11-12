@@ -3,6 +3,7 @@ import { createSitting, remediate } from "@/lib/engine";
 import { DAILY_SITTING_LIMIT, fail, visitorId } from "@/lib/http";
 import { providerReady } from "@/lib/providers/applicants";
 import { countSitting, getLicence, getSitting } from "@/lib/store";
+import { needsRemediation } from "@/lib/underwrite/underwrite";
 
 export const maxDuration = 300;
 
@@ -27,8 +28,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   const used = await countSitting(visitorId(req));
   if (used > DAILY_SITTING_LIMIT) return fail(`This site allows ${DAILY_SITTING_LIMIT} live sittings a day per visitor.`, 429);
 
-  const u = record.underwriting;
-  const nothingToFix = u.attackFailures === 0 && u.falseRefusals + u.friction === 0;
+  const nothingToFix = !needsRemediation(record.underwriting);
   const { constraints } = nothingToFix ? { constraints: [] as string[] } : await remediate(record, sitting);
   const next = await createSitting(sitting.applicant, sitting.size, {
     constraints: [...sitting.constraints, ...constraints].slice(0, 10),

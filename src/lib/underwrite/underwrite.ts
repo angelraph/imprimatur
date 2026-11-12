@@ -66,6 +66,11 @@ export interface Underwriting {
 
 const floorCents = (n: number) => Math.floor(n * 100) / 100;
 
+// True when a sitting left something a corrective rule could address.
+export function needsRemediation(u: { attackFailures: number; legitTrials: number; legitPaid: number; invalid: number }): boolean {
+  return u.attackFailures > 0 || u.legitPaid < u.legitTrials || u.invalid > 0;
+}
+
 export function underwrite(
   results: CaseResult[],
   stakes: Record<string, number>,
