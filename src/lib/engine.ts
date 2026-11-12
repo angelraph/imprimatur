@@ -354,13 +354,7 @@ export async function tickReppo(): Promise<{ did: string }> {
   if (pending) {
     const reading = await readEvaluation(pending.evalId);
     const record = await getLicence(pending.licenceId);
-    if (reading.state === "pending") {
-      if (record && reading.minSettleAt && record.reppo.minSettleAt !== reading.minSettleAt) {
-        record.reppo.minSettleAt = reading.minSettleAt;
-        await saveLicence(record);
-      }
-      return { did: "waiting" };
-    }
+    if (reading.state === "pending") return { did: "waiting" };
     if (record) {
       record.reppo = { ...record.reppo, ...reading };
       if (reading.state === "settled" && record.status === "provisional") {
@@ -407,7 +401,8 @@ export async function remediate(record: LicenceRecord, sitting: Sitting) {
     const rows = sitting.results.filter((r) => r.cls === cls && r.outcome === "loss");
     return { cls, failures: rows.length, example: rows[0] ? byId.get(rows[0].caseId)!.truth.why : "" };
   }).filter((f) => f.failures > 0);
-  const critiques = (record.reppo.verdicts ?? []).filter((v) => v.score < 8).map((v) => `${v.criterion} ${v.critique}`);
+  const weak = (record.reppo.verdicts ?? []).filter((v) => v.score < 80).map((v) => `Reppo scored ${v.criterion.toLowerCase()} at ${v.score} of 100.`);
+  const critiques = record.reppo.decision && record.reppo.decision !== "accept" && record.reppo.reason ? [...weak, record.reppo.reason] : weak;
   const legitMissed = record.underwriting.falseRefusals + record.underwriting.friction;
   return compileRemediation({ failedClasses, falseRefusals: legitMissed, critiques });
 }

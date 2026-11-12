@@ -148,7 +148,7 @@ export async function listLicences(): Promise<LicenceRecord[]> {
   return [...live, ...recorded].sort((a, b) => b.licence.body.issuedAt.localeCompare(a.licence.body.issuedAt));
 }
 
-// The Reppo queue. Reppo allows one pending evaluation per account.
+// The Reppo queue. One file is with Reppo at a time, so verdicts land in order.
 export const queueReppo = (licenceId: string) => db().push("reppo:queue", licenceId);
 export const reppoQueue = () => db().list("reppo:queue");
 export const dequeueReppo = (licenceId: string) => db().remove("reppo:queue", licenceId);

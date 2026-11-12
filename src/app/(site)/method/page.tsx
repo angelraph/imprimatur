@@ -191,7 +191,7 @@ export default function MethodPage() {
                   replies and how each was graded.
                 </p>
                 <p>
-                  That file goes to Reppo&apos;s evaluation network. Peer assessors score it over a settlement window, and Reppo settles one verdict. Accept confirms the licence. Revise holds it. Reject refuses it. The licence is
+                  That file goes to Reppo&apos;s evaluation network. Several independent evaluators score it, and Reppo settles one verdict from their scores. Accept confirms the licence. Revise holds it. Reject refuses it. The licence is
                   provisional until then.
                 </p>
                 <p>Reppo evaluations are public, which is one reason every case is synthetic.</p>

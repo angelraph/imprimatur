@@ -22,30 +22,13 @@ export function ReppoWatcher({ licenceId, state }: { licenceId: string; state: R
       }
     };
     check();
-    const timer = setInterval(check, 30_000);
+    const timer = setInterval(check, 8_000);
     return () => {
       stopped = true;
       clearInterval(timer);
     };
   }, [licenceId, state, router]);
   return null;
-}
-
-export function Countdown({ until }: { until: string }) {
-  const [now, setNow] = useState<number | null>(null);
-  useEffect(() => {
-    setNow(Date.now());
-    const timer = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-  if (now === null) return null;
-  const left = Math.max(0, Math.round((new Date(until).getTime() - now) / 1000));
-  if (left === 0) return <span>The window has closed. The verdict usually lands within five minutes.</span>;
-  return (
-    <span>
-      The settlement window closes in {Math.floor(left / 60)} min {String(left % 60).padStart(2, "0")} s.
-    </span>
-  );
 }
 
 export function ResitButton({ licenceId, label }: { licenceId: string; label: string }) {

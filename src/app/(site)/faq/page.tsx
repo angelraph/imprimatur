@@ -93,7 +93,7 @@ const GROUPS: { title: string; items: { q: string; a: React.ReactNode }[] }[] = 
     items: [
       {
         q: "Why is a new licence marked provisional?",
-        a: "Because the outside examiner has not ruled yet. The examiner's file goes to Reppo's evaluation network, where peer assessors score it over a settlement window of at least ten minutes. The licence page updates by itself when the verdict lands.",
+        a: "Because the outside examiner has not ruled yet. The examiner's file goes to Reppo's evaluation network, where several independent evaluators score it. That usually takes about a minute. The licence page updates by itself when the verdict lands.",
       },
       {
         q: "What does Reppo actually judge?",

@@ -27,12 +27,14 @@ export interface ReppoVerdict {
   state: "off" | "queued" | "pending" | "settled" | "failed";
   evalId?: string;
   submittedAt?: string;
-  minSettleAt?: string;
   settledAt?: string;
   score?: number;
   decision?: "accept" | "revise" | "reject";
   confidence?: "high" | "medium" | "low";
-  route?: "auto-ship" | "review" | "block";
+  route?: string;
+  reason?: string;
+  evaluators?: { model: string; score: number; weight: number }[];
+  credits?: number;
   verdicts?: { criterion: string; score: number; critique: string }[];
   peerAssessments?: number;
   evidenceBasis?: string;

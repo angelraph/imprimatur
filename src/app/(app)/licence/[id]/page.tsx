@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CaseList } from "@/components/CaseList";
-import { CopyButton, Countdown, ReppoWatcher, ResitButton } from "@/components/LicenceLive";
+import { CopyButton, ReppoWatcher, ResitButton } from "@/components/LicenceLive";
 import { dateTime, Fact, Panel, pct, Seal, smallUsd, StatusBadge, usd } from "@/components/ui";
 import { CLASS_LABEL } from "@/lib/exam/types";
 import { EXAM_GRAPH } from "@/lib/graph/nodes";
@@ -151,13 +151,13 @@ export default async function LicencePage({ params, searchParams }: PageProps<"/
         )}
         {record.reppo.state === "queued" && (
           <p className="text-sm text-muted" aria-live="polite">
-            Waiting in line. Reppo judges one file at a time per account, so this one is submitted as soon as the one ahead settles. You can leave this page open.
+            Waiting to be sent to Reppo. This usually takes a few seconds. You can leave this page open.
           </p>
         )}
         {record.reppo.state === "pending" && (
           <p className="text-sm text-muted" aria-live="polite">
-            The file is with Reppo&apos;s peer assessors. {record.reppo.minSettleAt ? <Countdown until={record.reppo.minSettleAt} /> : "The window is ten minutes."} The
-            licence is provisional until then.
+            The file is with Reppo&apos;s evaluators. A verdict usually lands within a minute, and this page updates by itself. The licence is provisional
+            until then.
           </p>
         )}
         {record.reppo.state === "failed" && <p className="text-sm text-warn">Reppo could not judge this file: {record.reppo.failureReason}</p>}
@@ -167,19 +167,25 @@ export default async function LicencePage({ params, searchParams }: PageProps<"/
               <Fact label="Decision" value={<span className="capitalize">{record.reppo.decision}</span>} />
               <Fact label="Route" value={<span className="capitalize">{record.reppo.route ?? "none"}</span>} />
               <Fact label="Confidence" value={<span className="capitalize">{record.reppo.confidence}</span>} />
-              <Fact label="Peer assessments" value={record.reppo.peerAssessments ?? 0} />
+              <Fact label="Evaluators" value={record.reppo.peerAssessments ?? 0} />
             </dl>
+            {record.reppo.reason && <p className="mt-6 text-sm leading-relaxed">{record.reppo.reason}</p>}
             <ul className="mt-6 divide-y divide-rule border-t border-rule">
               {(record.reppo.verdicts ?? []).map((v) => (
                 <li key={v.criterion} className="py-4">
                   <div className="flex items-start justify-between gap-4">
                     <p className="text-sm font-medium">{v.criterion}</p>
-                    <p className="shrink-0 font-mono text-sm">{v.score} / 10</p>
+                    <p className="shrink-0 font-mono text-sm">{v.score} / 100</p>
                   </div>
-                  <p className="mt-1.5 text-sm text-muted">{v.critique}</p>
+                  {v.critique && <p className="mt-1.5 text-sm text-muted">{v.critique}</p>}
                 </li>
               ))}
             </ul>
+            {(record.reppo.evaluators ?? []).length > 0 && (
+              <p className="mt-4 text-xs leading-relaxed text-muted">
+                Independent evaluators: {(record.reppo.evaluators ?? []).map((e) => `${e.model} gave ${e.score}`).join(", ")}.
+              </p>
+            )}
             {record.reppo.settledAt && <p className="mt-2 text-xs text-muted">Settled {dateTime(record.reppo.settledAt)}.</p>}
           </div>
         )}

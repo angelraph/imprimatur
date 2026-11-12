@@ -88,7 +88,7 @@ export default function PricingPage() {
               {[
                 ["Open model on Dolphin", `${usd(dolphin.in)} in and ${usd(dolphin.out)} out per million tokens. A full sitting uses tens of thousands of tokens, a fraction of a cent.`],
                 ["SERV Reasoning", "A small model reads messy replies, audits reasons and writes corrective rules. Charged per token at SERV's listed price."],
-                ["Reppo", "One evaluation per sitting at one cent, charged only when a verdict comes back."],
+                ["Reppo", "One evaluation per sitting, paid in Reppo credits and charged only when a verdict comes back."],
                 ["Kite", "Opening a Passport session costs nothing here. Checks are paid by whoever asks."],
               ].map(([t, d]) => (
                 <div key={t} className="py-5">
